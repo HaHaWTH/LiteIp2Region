@@ -2,6 +2,7 @@ package io.wdsj.liteip2region.command;
 
 import io.wdsj.liteip2region.setting.Settings;
 import io.wdsj.liteip2region.util.CacheUtils;
+import io.wdsj.liteip2region.util.IpUtils;
 import io.wdsj.liteip2region.util.PersistDataUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -33,6 +34,7 @@ public class ConstructCommand implements CommandExecutor {
                 }
                 Player player = (Player) sender;
                 CacheUtils.addShowIpStatus(player.getUniqueId(), true);
+                CacheUtils.addIpRegion(player.getUniqueId(), IpUtils.getPlayerRegion(player));
                 PersistDataUtils.savePlayerData(player, true);
                 sendMessage(sender, settingsManager.getProperty(Settings.SHOW_MESSAGE));
                 return true;
@@ -49,6 +51,7 @@ public class ConstructCommand implements CommandExecutor {
                 Player player = (Player) sender;
                 CacheUtils.addShowIpStatus(player.getUniqueId(), false);
                 PersistDataUtils.savePlayerData(player, false);
+                CacheUtils.addIpRegion(player.getUniqueId(), "");
                 sendMessage(sender, settingsManager.getProperty(Settings.HIDE_MESSAGE));
                 return true;
             }

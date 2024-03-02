@@ -57,7 +57,7 @@ public class PlaceHolderPlugin extends PlaceholderExpansion {
         // 判断是否开启显示
         boolean showEnable = CacheUtils.getShowIpStatus(player.getUniqueId());
         if (!showEnable) {
-            return plugin.getConfig().getString(identifier, unknown);
+            return unknown;
         }
         // %ip2region_region%
         if ("region".equals(identifier)) {
