@@ -1,0 +1,34 @@
+name: LiteIp2Region
+version: '${project.version}'
+main: io.wdsj.liteip2region.LiteIp2Region
+api-version: '1.13'
+load: STARTUP
+folia-supported: true
+depend:
+  - PlaceholderAPI
+permissions:
+  ip2region.*:
+    description: 具有所有权限
+    children:
+      ip2region.toggle: true
+      ip2region.reload: true
+      ip2region.show: true
+      ip2region.hide: true
+  ip2region.toggle:
+    description: 开关ip2region
+    default: op
+  ip2region.reload:
+    description: 重新加载ip2region
+    default: op
+  ip2region.show:
+    description: 显示ip2region
+    default: op
+  ip2region.hide:
+    description: 隐藏ip2region
+    default: op
+commands:
+  ip2region:
+    description: ip2region命令
+    usage: /ip2region <toggle|reload|show|hide>
+    aliases:
+      - iptoregion
