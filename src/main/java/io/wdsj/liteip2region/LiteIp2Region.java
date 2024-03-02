@@ -15,9 +15,13 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.lionsoul.ip2region.xdb.Searcher;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
+
+import static io.wdsj.liteip2region.util.Utils.bufferSearcher;
 
 public final class LiteIp2Region extends JavaPlugin {
     private static LiteIp2Region instance;
@@ -25,6 +29,7 @@ public final class LiteIp2Region extends JavaPlugin {
     private final File CONFIG_FILE = new File(getDataFolder(), "config.yml");
     private static File DB;
     public static SettingsManager settingsManager;
+    public static byte[] cbuff;
     public static LiteIp2Region getInstance() {
         return instance;
     }
@@ -49,6 +54,11 @@ public final class LiteIp2Region extends JavaPlugin {
         if (FileUtil.notExists(DB)) {
             saveResource("ip2region.xdb", false);
         }
+        try {
+            cbuff = Searcher.loadContentFromFile(DB.getPath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Metrics metrics = new Metrics(this, 21193);
         new PlaceHolderPlugin(this).register();
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
@@ -64,5 +74,12 @@ public final class LiteIp2Region extends JavaPlugin {
         new PlaceHolderPlugin(this).unregister();
         Objects.requireNonNull(getCommand("ip2region")).setExecutor(null);
         Objects.requireNonNull(getCommand("ip2region")).setTabCompleter(null);
+        if (bufferSearcher != null) {
+            try {
+                bufferSearcher.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
